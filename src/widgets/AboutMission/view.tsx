@@ -12,30 +12,58 @@
  */
 
 "use client";
-import { FC, useRef } from "react";
+import { FC, useMemo, useRef } from "react";
+import { CommonProps } from "@lib/types";
+import { useScroll } from "framer-motion";
+import { getRunningTextCharCount, hasArrayElements } from "@utils/commonUtils";
 import Image from "next/image";
-import { motion, useScroll, useTransform } from "framer-motion";
+import RunningTextCanvas from "@components/RunningTextCanvas";
 
 interface AboutMissionViewProps {
-  contents: Record<string, any>;
+  ourMissions: CommonProps;
 }
 
-const AboutMissionView: FC<AboutMissionViewProps> = ({ contents }) => {
-  const sectionRef = useRef(null);
-  const { scrollYProgress } = useScroll({ target: sectionRef, offset: ["start end", "start start"] });
-  const imageWidth = useTransform(scrollYProgress, [0, 1], ["65%", "100%"]);
-  const borderRadius = useTransform(scrollYProgress, [0, 1], ["0", "0px"]);
+const AboutMissionView: FC<AboutMissionViewProps> = ({ ourMissions }) => {
+  const sectionRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: sectionRef,
+    offset: ["start center", "end center"],
+  });
+  const content = useMemo(() => ourMissions?.scrollableText, [ourMissions?.scrollableText]);
+
+  const totalChars = useMemo(() => getRunningTextCharCount(content), [content]);
+
   return (
-    <section ref={sectionRef} className="relative flex items-center justify-center h-screen bg-white overflow-hidden">
-      <motion.div className="absolute flex items-center h-full mx-auto overflow-hidden" style={{ width: imageWidth, borderRadius }}>
-        <Image src={contents?.media} alt="Mission" fill className="mx-auto" />
-        <span className="absolute w-full h-full bg-black/50"></span>
-      </motion.div>
-      <div className="relative flex items-center justify-center w-full h-full">
-        <div className="w-9/12 lg:w-1/2">
-          <div className="text-center text-white">
-            <h2 className="mb-6 uppercase">{contents?.title}</h2>
-            <h3 className="text-h3 xl:text-display2">{contents?.description}</h3>
+    <section className="relative min-h-screen" ref={sectionRef} style={{ height: `${totalChars * 10}vh` }}>
+      <div className="sticky top-0 h-screen container flex flex-col">
+        {/* Top Title */}
+        <div className="flex-none pt-16 lg:pt-26">
+          <h2 className="text-h4 lg:text-h2">{ourMissions?.title}</h2>
+        </div>
+
+        {/* Middle Running Text */}
+        <div className="flex-1 flex items-center">
+          {/* flex flex-col justify-between h-full */}
+          <h3 className="text-h5 lg:text-h3">
+            <RunningTextCanvas content={content} targetRef={sectionRef} scrollYProgress={scrollYProgress} totalChars={totalChars} />
+          </h3>
+        </div>
+
+        {/* Bottom Description List */}
+        <div className="flex-none pb-16 lg:pb-26 overflow-x-hidden max-lg:-mx-6">
+          <div className="flex flex-nowrap max-lg:overflow-x-auto max-lg:px-6 [scrollbar-width:none] [-ms-overflow-style:none] [&::-webkit-scrollbar]:hidden">
+            {hasArrayElements(ourMissions?.contents) &&
+              ourMissions?.contents?.map((content, index) => (
+                <div className="flex items-center gap-4 lg:gap-8 max-lg:w-[360px] lg:w-4/12 shrink-0" key={`om-baner-${index + 1}`}>
+                  <div className="w-[108px] lg:w-[132px] shrink-0">
+                    <Image src={content?.media} width={600} height={600} alt={content?.title} className="w-full rounded-lg" />
+                  </div>
+                  <div>
+                    <h4 className="text-h6 pe-4 lg:pe-4">{content?.title}</h4>
+                    <p className="mt-2 pe-6 lg:pe-16">{content?.description}</p>
+                  </div>
+                </div>
+              ))}
           </div>
         </div>
       </div>

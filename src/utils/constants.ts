@@ -30,6 +30,8 @@ export const serviceOptions: EmblaOptionsType = {
 };
 
 export const SCROLL_THRESHOLD = 300;
+export const BUFFER_SIZE = 10;
+export const SERVICE_BANNER_HEIGHT = 80;
 
 export const pageTypes = {
   CONTACT_US: "contact-us",
@@ -51,5 +53,3 @@ export const aboutBannerStyle: Record<string, any> = {
     "w-[32px] h-[32px] rounded-full overflow-hidden opacity-30",
   ],
 };
-
-export const SERVICE_BANNER_HEIGHT = 80;

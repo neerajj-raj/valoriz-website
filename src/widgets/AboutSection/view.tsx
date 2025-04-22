@@ -12,12 +12,11 @@
  */
 "use client";
 import Image from "next/image";
-import { mediaTypes } from "@utils/constants";
 import { motion, AnimatePresence } from "framer-motion";
-import { FC, useEffect, useRef, useState } from "react";
-import ScrollCanvasAnimation from "./components/AnimationCanvas";
+import { FC, useEffect, useMemo, useRef, useState } from "react";
 import { getFeatureIndex, hasArrayElements } from "@utils/commonUtils";
 import useScroll from "@hooks/useScroll";
+import AnimationCanvas from "./components/AnimationCanvas";
 
 interface AboutSectionViewProps {
   abouts: Record<string, any>;
@@ -25,9 +24,9 @@ interface AboutSectionViewProps {
 
 const AboutSectionView: FC<AboutSectionViewProps> = ({ abouts }) => {
   const sectionRef = useRef<HTMLElement>(null);
-  const features = abouts?.media?.lg;
-
+  const mediaFrames = useMemo(() => abouts?.media?.lg, [abouts?.media?.lg]);
   const [currentFeature, setCurrentFeature] = useState(0);
+  const [maxScrollHeight, setMaxScrollHeight] = useState(0);
   const { scrollY } = useScroll();
 
   useEffect(() => {
@@ -42,21 +41,25 @@ const AboutSectionView: FC<AboutSectionViewProps> = ({ abouts }) => {
     }
   }, [abouts?.features, scrollY]);
 
+  useEffect(() => {
+    const heroBannerHeight = document.getElementById("hero-banner")?.scrollHeight ?? 0;
+    setMaxScrollHeight((sectionRef?.current?.offsetHeight ?? 0) + heroBannerHeight);
+  }, [mediaFrames]);
+
   return (
-    <section className="relative min-h-[100vh] bg-black" style={{ height: `${features.length * 100}vh` }} ref={sectionRef}>
-      <div className="sticky top-20 lg:top-0 py-10 xl:py-20 z-10">
-        <section className="text-white pb-5 lg:pb-9">
-          <div className="container flex flex-col justify-between h-full">
-            <div className="grid lg:grid-cols-2">
-              <h3 className="text-h4 lg:text-h3">{abouts?.title}</h3>
-              <div className="flex items-center justify-center h-[400px] max-lg:h-[200px]">
-                {abouts?.media?.type === mediaTypes.ANIMATION ? (
-                  <ScrollCanvasAnimation frames={abouts?.media?.lg} />
-                ) : (
-                  <Image src={abouts?.media?.lg} width={507} height={141} alt="About" className="w-full max-w-[400px] mx-auto max-lg:hidden" />
-                )}
+    <section className="relative min-h-screen bg-black" style={{ height: `${mediaFrames?.length * 10}vh` }} ref={sectionRef}>
+      {/* Sticky Full Content */}
+      <div className="sticky top-0 h-screen flex items-center justify-center py-10 xl:py-20 z-10">
+        <div className="text-white w-full">
+          <div className="container flex flex-col justify-center h-full">
+            {/* Top Section */}
+            <div className="grid lg:grid-cols-2 items-center">
+              <h3 className="text-h4 lg:text-h3 lg:text-left lg:mb-20">{abouts?.title}</h3>
+              <div className="flex items-center justify-center lg:justify-end h-[400px] max-lg:h-[200px] lg:mt-5 w-full">
+                <AnimationCanvas frames={mediaFrames} maxScrollHeight={maxScrollHeight} />
               </div>
             </div>
+            {/* AnimatePresence Section */}
             <AnimatePresence mode="wait">
               <motion.div
                 key={currentFeature}
@@ -64,7 +67,7 @@ const AboutSectionView: FC<AboutSectionViewProps> = ({ abouts }) => {
                 animate={{ opacity: 1, y: 0 }}
                 exit={{ opacity: 0, y: -20 }}
                 transition={{ duration: 0.4 }}
-                className="grid grid-cols-1 lg:grid-cols-2"
+                className="grid grid-cols-1 lg:grid-cols-2 gap-10"
               >
                 <div>
                   <h4 className="text-h5 lg:text-h4">{abouts?.features?.[currentFeature]?.title}</h4>
@@ -74,7 +77,7 @@ const AboutSectionView: FC<AboutSectionViewProps> = ({ abouts }) => {
                   {hasArrayElements(abouts?.features?.[currentFeature]?.values) &&
                     abouts?.features?.[currentFeature]?.values?.map((value: Record<string, any>) => (
                       <div className="flex flex-col text-center" key={value?.key}>
-                        <Image src={value?.lg} width={48} height={48} alt="" className="max-w-full mx-auto max-lg:w-8 max-lg:h-8" />
+                        <Image src={value?.lg} width={48} height={48} alt={value?.title} className="max-w-full mx-auto max-lg:w-8 max-lg:h-8" />
                         <h5 className="text mt-6 lg:mt-4">{value?.title}</h5>
                       </div>
                     ))}
@@ -82,7 +85,7 @@ const AboutSectionView: FC<AboutSectionViewProps> = ({ abouts }) => {
               </motion.div>
             </AnimatePresence>
           </div>
-        </section>
+        </div>
       </div>
     </section>
   );

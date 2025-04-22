@@ -16,13 +16,42 @@ import AboutLayout from "@app/layouts/AboutLayout";
 export default function about() {
   const aboutContents = {
     banners: {
-      media: "/images/about-banner/mainBanner.webp",
-      roundedBanner: [
-        { media: "/images/about-banner/rounded-2.webp", alt: "image-1" },
-        { media: "/images/about-banner/rounded-2.webp", alt: "image-2" },
-        { media: "/images/about-banner/rounded-1.webp", alt: "image-3" },
-        { media: "/images/about-banner/rounded-3.webp", alt: "image-4" },
-        { media: "/images/about-banner/rounded-3.webp", alt: "image-5" },
+      contents: [
+        {
+          banner: "/images/about-banner/about-banner-1.webp",
+          thumb: "/images/about-banner/about-banner-thumb-1.webp",
+          title: "Building the <br /> Future of Digital <br /> Possibilities",
+          subtitle: `We're more than a company, we're a collective of thinkers, doers, and dreamers.`,
+          keyvalue: `120+`,
+        },
+        {
+          banner: "/images/about-banner/about-banner-2.webp",
+          thumb: "/images/about-banner/about-banner-thumb-2.webp",
+          title: "Building the <br /> Future of Digital <br /> Possibilities",
+          subtitle: `We're more than a company, we're a collective of thinkers, doers, and dreamers.`,
+          keyvalue: `8+`,
+        },
+        {
+          banner: "/images/about-banner/about-banner-3.webp",
+          thumb: "/images/about-banner/about-banner-thumb-3.webp",
+          title: "Building the <br /> Future of Digital <br /> Possibilities",
+          subtitle: `We're more than a company, we're a collective of thinkers, doers, and dreamers.`,
+          keyvalue: `3+`,
+        },
+        {
+          banner: "/images/about-banner/about-banner-4.webp",
+          thumb: "/images/about-banner/about-banner-thumb-4.webp",
+          title: "Building the <br /> Future of Digital <br /> Possibilities",
+          subtitle: `We're more than a company, we're a collective of thinkers, doers, and dreamers.`,
+          keyvalue: `10+`,
+        },
+        {
+          banner: "/images/about-banner/about-banner-5.webp",
+          thumb: "/images/about-banner/about-banner-thumb-5.webp",
+          title: "Building the <br /> Future of Digital <br /> Possibilities",
+          subtitle: `We're more than a company, we're a collective of thinkers, doers, and dreamers.`,
+          keyvalue: `20+`,
+        },
       ],
     },
     historyInfo: {
@@ -67,10 +96,23 @@ export default function about() {
         },
       ],
     },
-    mission: {
-      media: "/images/about-mission/background.webp",
+    ourMissions: {
       title: "Our Mission",
-      description: "Delivering high-quality, cutting-edge & customer-centric solutions to businesses and its customers.",
+      scrollableText: [
+        { text: "Delivering ", className: "" },
+        { text: "high-quality, cutting edge & customer centric", className: "text-primary" },
+        { isBreak: true },
+        { text: "solutions to businesses and its customers.​", className: "" },
+      ],
+      contents: [
+        { media: "/images/about-mission/mission-1.webp", title: "Always Ahead", description: "Pushing boundaries to ensure you stay on top." },
+        {
+          media: "/images/about-mission/mission-2.webp",
+          title: "Flawless Operations",
+          description: "Making complexity simple, so your business runs flawlessly.",
+        },
+        { media: "/images/about-mission/mission-3.webp", title: "Adaptive Solutions", description: "Smart strategies that evolve with your needs." },
+      ],
     },
     goals: {
       features: [
@@ -83,6 +125,29 @@ export default function about() {
           label: "Agile enabled talent and growing",
         },
         { id: "projects", count: "10+", label: "Years Of Dedication" },
+      ],
+    },
+    ourTeams: {
+      title: "Our Team",
+      description:
+        "We maintain a positive work life balance, ensuring our team has the support to grow, innovate, and deliver exceptional digital solutions while enjoying a fulfilling career.",
+      contents: [
+        { media: "/images/our-teams/team-1.webp" },
+        { media: "/images/our-teams/team-2.webp" },
+        { media: "/images/our-teams/team-3.webp" },
+        { media: "/images/our-teams/team-4.webp" },
+        { media: "/images/our-teams/team-5.webp" },
+        { media: "/images/our-teams/team-6.webp" },
+        { media: "/images/our-teams/team-7.webp" },
+      ],
+    },
+    leaderShips: {
+      title: "Our Leadership",
+      contents: [
+        { media: "/images/leaderships/leader-sharmiq.webp", title: "Sharmiq Kolathodi", description: "Cheif Executive Officer" },
+        { media: "/images/leaderships/leader-ashish.webp", title: "Ashish Thomas", description: "Co-Founder, Director & People Success" },
+        { media: "/images/leaderships/leader-madhu.webp", title: "Madhulal", description: "Director - Client Success" },
+        { media: "/images/leaderships/leader-riju.webp", title: "Riju Thomas", description: "Technical Architect" },
       ],
     },
   };

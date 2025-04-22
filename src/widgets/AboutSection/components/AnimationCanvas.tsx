@@ -11,69 +11,96 @@
  * @author Neeraj
  */
 "use client";
+import { BUFFER_SIZE } from "@utils/constants";
 import { FC, useCallback, useEffect, useMemo, useRef, useState } from "react";
 interface AnimationCanvasProps {
   frames: string[];
+  maxScrollHeight: number;
 }
-const AnimationCanvas: FC<AnimationCanvasProps> = ({ frames }) => {
+const AnimationCanvas: FC<AnimationCanvasProps> = ({ frames, maxScrollHeight }) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const [images, setImages] = useState<HTMLImageElement[]>([]);
   const containerRef = useRef<HTMLDivElement>(null);
-  const framesCount = useMemo(() => frames.length, [frames]);
+  const framesCount = useMemo(() => frames?.length, [frames]);
 
-  useEffect(() => {
-    const imagesArray: HTMLImageElement[] = [];
-    for (let i = 0; i < framesCount; i++) {
+  const loadImage = useCallback(
+    (index: number) => {
+      if (images?.[index] || !frames?.[index]) return;
       const img = new Image();
-      img.src = frames[i];
-      imagesArray.push(img);
-    }
-    setImages(imagesArray);
-  }, [framesCount, frames]);
+      img.src = frames[index];
+      setImages((prev) => {
+        const updated = [...prev];
+        updated[index] = img;
+        return updated;
+      });
+    },
+    [frames, images]
+  );
 
   const render = useCallback(() => {
-    const canvas = canvasRef.current;
-    const container = containerRef.current;
-    if (!canvas || !container || images.length === 0) return;
+    const canvas = canvasRef?.current;
+    const container = containerRef?.current;
+
+    if (!canvas || !container) return;
+
+    const scale = window.devicePixelRatio || 1;
+
+    // Only set width/height if they changed (avoid layout thrashing)
+    const displayWidth = canvas.offsetWidth;
+    const displayHeight = canvas.offsetHeight;
+    const scaledWidth = displayWidth * scale;
+    const scaledHeight = displayHeight * scale;
+
+    if (canvas.width !== scaledWidth || canvas.height !== scaledHeight) {
+      canvas.width = scaledWidth;
+      canvas.height = scaledHeight;
+    }
 
     const ctx = canvas.getContext("2d");
     if (!ctx) return;
 
     const scrollTop = window.scrollY;
-    const maxScrollTop = document.body.scrollHeight - window.innerHeight;
-    const scrollFraction = scrollTop / maxScrollTop;
+    const maxScrollTop = maxScrollHeight - window.innerHeight;
+    const scrollFraction = maxScrollTop > 0 ? scrollTop / maxScrollTop : 0;
+
     const frameIndex = Math.min(framesCount - 1, Math.floor(scrollFraction * framesCount));
 
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    ctx.drawImage(images[frameIndex], 0, 0, canvas.width, canvas.height);
-  }, [framesCount, images]);
+    // Preload next BUFFER_SIZE frames
+    for (let i = frameIndex; i < Math.min(frameIndex + BUFFER_SIZE, framesCount); i++) {
+      if (!images[i]) loadImage(i);
+    }
+
+    const currentImage = images[frameIndex];
+    if (!currentImage) return;
+
+    // Only apply scaling once per frame
+    ctx.save();
+    ctx.setTransform(1, 0, 0, 1, 0, 0); // Reset any transform
+    ctx.scale(scale, scale);
+    ctx.clearRect(0, 0, displayWidth, displayHeight);
+
+    ctx.imageSmoothingEnabled = true;
+    ctx.imageSmoothingQuality = "high";
+
+    // Draw image centered in square
+    const squareSize = Math.min(displayWidth, displayHeight);
+    const x = (displayWidth - squareSize) / 2;
+    const y = (displayHeight - squareSize) / 2;
+
+    ctx.drawImage(currentImage, x, y, squareSize, squareSize);
+    ctx.restore();
+  }, [framesCount, images, loadImage, maxScrollHeight]);
 
   useEffect(() => {
-    if (images.length === framesCount) render();
-
     const handleScroll = () => {
       requestAnimationFrame(render);
     };
-
-    const handleResize = () => {
-      if (canvasRef.current) {
-        canvasRef.current.width = window.innerWidth;
-        canvasRef.current.height = window.innerHeight;
-        render();
-      }
-    };
-
     window.addEventListener("scroll", handleScroll);
-    window.addEventListener("resize", handleResize);
-
-    return () => {
-      window.removeEventListener("scroll", handleScroll);
-      window.removeEventListener("resize", handleResize);
-    };
-  }, [framesCount, images, render]);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, [render]);
 
   return (
-    <div ref={containerRef} className="w-full h-full">
+    <div ref={containerRef} className="items-center justify-center w-[400px] h-[400px] max-lg:h-[200px] max-lg:w-[200px]">
       <canvas ref={canvasRef} style={{ width: "100%", height: "100%" }} />
     </div>
   );

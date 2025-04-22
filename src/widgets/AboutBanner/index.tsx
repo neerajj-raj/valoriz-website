@@ -14,11 +14,11 @@ import { FC } from "react";
 import AboutBannerView from "@widgets/AboutBanner/view";
 
 interface AboutBannerProps {
-  contents: Record<string, any>;
+  banners: Record<string, any>;
 }
 
-const AboutBanner: FC<AboutBannerProps> = ({ contents }) => {
-  return <AboutBannerView contents={contents} />;
+const AboutBanner: FC<AboutBannerProps> = ({ banners }) => {
+  return <AboutBannerView banners={banners} />;
 };
 
 export default AboutBanner;

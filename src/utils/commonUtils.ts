@@ -18,7 +18,7 @@ export const hasArrayElements = (list: any[]) => Array.isArray(list) && list.len
 export const getCircumference = () => 2 * Math.PI * heroBannerConstants.RADIUS;
 
 export const getAnimationImages = (frames: number, pathPrefix: string) =>
-  Array.from({ length: frames }).map((_, i) => `${pathPrefix}/frame_${String(i + 1).padStart(4, "0")}.jpg`);
+  Array.from({ length: frames }).map((_, i) => `${pathPrefix}/${String(i + 1).padStart(4, "0")}.png`);
 
 export const getFeatureIndex = (currentHeight: number, totalHeight: number, featuresCount: number) => {
   const segmentHeight = totalHeight / featuresCount;
@@ -33,3 +33,6 @@ export const getFeatureIndex = (currentHeight: number, totalHeight: number, feat
 
   return 0;
 };
+
+export const getRunningTextCharCount = (content: Array<Record<string, any>>) =>
+  content?.filter((item) => !item.isBreak).reduce((acc, item) => acc + (item?.text?.length ?? 0), 0);

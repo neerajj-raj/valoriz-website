@@ -24,11 +24,14 @@ interface InstantScrollProps {
 const InstantScroll: FC<InstantScrollProps> = ({ text }) => {
   const scrollToTop = () => {
     if (typeof window !== "undefined") {
-      window.scroll({
-        top: 0,
-        left: 0,
-        behavior: "smooth",
-      });
+      const scrollStep = -window.scrollY / 50;
+      const scrollInterval = setInterval(() => {
+        if (window.scrollY !== 0) {
+          window.scrollBy(0, scrollStep);
+        } else {
+          clearInterval(scrollInterval);
+        }
+      }, 100);
     }
   };
   return (

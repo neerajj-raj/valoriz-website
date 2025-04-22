@@ -10,22 +10,34 @@
  *
  * @author Neeraj
  */
-
-import { FC } from "react";
+"use client";
+import React, { FC, useMemo, useRef } from "react";
+import RunningTextCanvas from "@components/RunningTextCanvas";
+import { useScroll } from "framer-motion";
+import { getRunningTextCharCount } from "@utils/commonUtils";
 
 interface HighlightsViewProps {
   highlights: Record<string, any>;
 }
 
-const HighlightsView: FC<HighlightsViewProps> = ({}) => {
+const HighlightsView: FC<HighlightsViewProps> = ({ highlights }) => {
+  const targetRef = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: targetRef,
+    offset: ["start center", "end center"],
+  });
+  const content = useMemo(() => highlights?.content as Array<Record<string, any>>, [highlights?.content]);
+  const totalChars = useMemo(() => getRunningTextCharCount(content), [content]);
+
   return (
-    <section className="flex flex-col justify-center min-h-screen py-16 lg:py-26">
-      <div className="container">
-        <div className="w-full lg:w-10/12 mx-auto">
-          <h2 className="text-h3 lg:text-h2">
-            Turning complexity into simplicity, <br />
-            so you can <span className="text-primary">focus on success</span>
-          </h2>
+    <section ref={targetRef} className="relative min-h-screen" style={{ height: `${totalChars * 10}vh` }}>
+      <div className="sticky top-0 h-screen flex flex-col justify-center">
+        <div className="container">
+          <div className="w-full lg:w-10/12 mx-auto">
+            <h2 className="text-h3 lg:text-h2 leading-snug tracking-wide flex flex-wrap">
+              <RunningTextCanvas content={content} targetRef={targetRef} scrollYProgress={scrollYProgress} totalChars={totalChars} />
+            </h2>
+          </div>
         </div>
       </div>
     </section>

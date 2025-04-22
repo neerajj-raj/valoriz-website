@@ -12,13 +12,14 @@
  */
 import { FC } from "react";
 import AboutMissionView from "@widgets/AboutMission/view";
+import { CommonProps } from "@lib/types";
 
 interface AboutMissionProps {
-  contents: Record<string, any>;
+  ourMissions: CommonProps;
 }
 
-const AboutMission: FC<AboutMissionProps> = ({ contents }) => {
-  return <AboutMissionView contents={contents} />;
+const AboutMission: FC<AboutMissionProps> = ({ ourMissions }) => {
+  return <AboutMissionView ourMissions={ourMissions} />;
 };
 
 export default AboutMission;

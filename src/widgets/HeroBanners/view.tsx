@@ -44,7 +44,7 @@ const HeroBannerView: FC<HeroBannersViewProps> = ({ contents }) => {
   };
 
   return (
-    <section className="relative w-[var(--slide-size)] h-screen bg-secondary">
+    <section className="relative w-[var(--slide-size)] h-screen bg-secondary" id="hero-banner">
       <div className="overflow-hidden h-full" ref={emblaRef}>
         <div className="flex touch-pan-y touch-pinch-zoom h-full">
           {hasArrayElements(contents?.medias) && contents?.medias?.map((media: Record<string, any>) => <HeroBanner key={media?.key} media={media} />)}

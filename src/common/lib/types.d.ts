@@ -15,3 +15,18 @@ export interface History {
   title: string;
   description: string;
 }
+
+export interface AboutBanner {
+  banner: string;
+  thumb: string;
+  title: string;
+  subtitle: string;
+  keyvalue: string;
+}
+
+export interface CommonProps {
+  title: string;
+  description: string;
+  scrollableText: Array<Record<string, any>>;
+  contents: Array<{ media: string; title: string; description: string }>;
+}

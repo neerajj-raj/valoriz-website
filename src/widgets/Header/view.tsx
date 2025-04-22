@@ -37,7 +37,7 @@ const HeaderView: FC<HeaderViewProps> = ({ contents, pageType }) => {
   const isActive = useMemo(() => scrolled || pageType === pageTypes.CONTACT_US || hovered, [hovered, pageType, scrolled]);
 
   return (
-    <header className={`fixed top-0 left-0 z-[1040] w-full h-[76px] ${showMobileNav || isActive ? "bg-white" : "bg-transparent"}`}>
+    <header className={`fixed top-0 left-0 z-[1040] w-full h-[76px] ${showMobileNav || isActive ? "bg-white" : "bg-transparent"}`} id="global-header">
       <div className="container h-full">
         <nav className="flex justify-between h-full">
           <div className="flex items-center">

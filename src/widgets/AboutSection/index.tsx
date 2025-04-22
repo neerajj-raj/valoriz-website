@@ -10,15 +10,19 @@
  *
  * @author Neeraj
  */
+"use client";
 import { FC } from "react";
 import AboutSectionView from "@widgets/AboutSection/view";
+import AboutViewSm from "./components/AboutViewSm";
+import useIsMobile from "@hooks/useIsMobile";
 
 interface AboutSectionProps {
   abouts: Record<string, any>;
 }
 
 const AboutSection: FC<AboutSectionProps> = ({ abouts }) => {
-  return <AboutSectionView abouts={abouts} />;
+  const isMobile = useIsMobile();
+  return isMobile ? <AboutViewSm abouts={abouts} /> : <AboutSectionView abouts={abouts} />;
 };
 
 export default AboutSection;

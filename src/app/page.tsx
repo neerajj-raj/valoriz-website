@@ -12,7 +12,6 @@
  */
 import HomeLayout from "@app/layouts/HomeLayout";
 import { getAnimationImages } from "@utils/commonUtils";
-import { mediaTypes } from "@utils/constants";
 
 export default function Home() {
   const homeContents = {
@@ -28,7 +27,7 @@ export default function Home() {
     },
     abouts: {
       title: "We believe in innovation that accelerates the path forward.",
-      media: { key: "1", lg: getAnimationImages(50, "/images/animation/home"), type: mediaTypes.ANIMATION },
+      media: { key: "1", lg: getAnimationImages(180, "/images/animation/trophy-green/PNG"), sm: "/images/about/video-placeholder.png" },
       features: [
         {
           title: "Ignite Potential",
@@ -242,6 +241,14 @@ export default function Home() {
         { name: "Dubai - UAE", countryCode: "+971", phoneNo: "42 23 3920", flag: "/images/project-in-mind/icon-dubai.svg" },
       ],
       email: { title: "Mail Us: info@valoriz.com", mailId: "info@valoriz.com" },
+    },
+    highlights: {
+      content: [
+        { text: "Turning complexity into simplicity, ", className: "" },
+        { isBreak: true },
+        { text: "so you can ", className: "" },
+        { text: "focus on success", className: "text-primary" },
+      ],
     },
   };
 

@@ -10,64 +10,126 @@
  *
  * @author Neeraj
  */
-import { FC } from "react";
+"use client";
+import { FC, useCallback, useEffect, useMemo, useState } from "react";
 import Image from "next/image";
 import Icon from "@core/icon/Icon";
 import Button from "@core/button/Button";
 import ArrowRight from "@app/common/icons/ArrowRight";
-import { hasArrayElements } from "@utils/commonUtils";
-import RoundedBanner from "./components/RoundedBanner";
+import useEmblaCarousel from "embla-carousel-react";
+import { AboutBanner } from "@lib/types";
 
 interface AboutBannerViewProps {
-  contents: Record<string, any>;
+  banners: Record<string, any>;
 }
 
-const AboutBannerView: FC<AboutBannerViewProps> = ({ contents }) => {
+const AboutBannerView: FC<AboutBannerViewProps> = ({ banners }) => {
+  const [emblaMainRef, emblaMain] = useEmblaCarousel({ loop: true });
+  const [selectedIndex, setSelectedIndex] = useState(0);
+
+  const slides: AboutBanner[] = useMemo(() => banners?.contents ?? [], [banners]);
+
+  const scrollTo = useCallback(
+    (index: number) => {
+      if (!emblaMain) return;
+      emblaMain.scrollTo(index);
+      setSelectedIndex(index);
+    },
+    [emblaMain]
+  );
+
+  // Enhanced looping-aware selectedIndex handling
+  useEffect(() => {
+    if (!emblaMain) return;
+    const onSelect = () => {
+      const index = emblaMain.selectedScrollSnap();
+      setSelectedIndex(index);
+    };
+    emblaMain.on("select", onSelect);
+    onSelect();
+  }, [emblaMain]);
+
+  // Helper to get visible thumbnails with virtual loop illusion
+  const getVisibleThumbs = useCallback(
+    (selectedIndex: number) => {
+      const total = slides.length;
+      const visibleCount = 5;
+      const half = Math.floor(visibleCount / 2);
+
+      const visibleThumbs = [];
+
+      for (let i = -half; i <= half; i++) {
+        const index = (selectedIndex + i + total) % total;
+        visibleThumbs.push({ ...slides[index], realIndex: index, offset: i });
+      }
+
+      return visibleThumbs;
+    },
+    [slides]
+  );
+
   return (
     <section className="bg-black">
-      <div className="relative min-h-screen py-16 lg:py-26 before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-black/70 before:z-20">
-        <div className="absolute left-0 top-0 w-full h-full z-10">
-          <Image src={contents?.media} width={1920} height={1133} alt="" className="w-full" />
-        </div>
-        <div className="absolute top-1/2 -translate-y-1/2 w-full z-20">
-          <div className="container lg:flex lg:items-center">
-            <div className="lg:w-1/2 max-lg:text-center text-white">
-              <h1 className="text-h3 lg:text-h1 text-primary-light leading-tight">
-                Building the <br />
-                Future of Digital <br />
-                Possibilities
-              </h1>
-              <h6 className="text-h6 mt-2 lg:mt-6">
-                <span className="max-lg:hidden">We&apos;re more than a company, we&apos;re a collective of thinkers, doers, and dreamers.</span>
-                Our culture is the heartbeat of everything we create.
-              </h6>
-              <Button variant="outline-light" className="flex items-center mt-12 max-lg:hidden">
-                <span>Lets Talk</span>
-                <Icon src={ArrowRight} size="sm" className="ms-2" />
-              </Button>
-            </div>
-            {hasArrayElements(contents?.roundedBanner) && (
-              <div className="lg:w-1/2">
-                <div className="flex flex-col items-center lg:hidden mt-18">
-                  <div className="flex items-center gap-7 overflow-x-hidden">
-                    <RoundedBanner contents={contents} size="sm" />
-                  </div>
-                  <Button variant="outline-light" className="flex items-center mt-12">
-                    <span>Lets Talk</span>
-                    <Icon src={ArrowRight} size="sm" className="ms-2" />
-                  </Button>
+      <div className="relative flex min-h-screen py-16 xl:py-26">
+        {/* Main Embla Carousel */}
+        <div className="absolute top-0 left-0 w-full h-full overflow-hidden" ref={emblaMainRef}>
+          <div className="flex h-full">
+            {slides.map((slide, index) => (
+              <div
+                className="min-w-full relative flex items-center flex-1 before:absolute before:left-0 before:top-0 before:w-full before:h-full before:bg-black/70 before:z-20"
+                key={`ab-${index + 1}`}
+              >
+                <div className="absolute left-0 top-0 w-full h-full z-10">
+                  <Image src={slide.banner} width={1920} height={1133} alt="about" className="w-full h-full max-h-full object-cover" />
                 </div>
-                <div className="flex max-lg:hidden">
-                  <div className="flex-1 text-center">
-                    <div className="text-[208px] leading-tight font-semibold gradient-text">25+</div>
-                    <p className="text-[48px] text-white">Site Launches</p>
-                  </div>
-                  <div className="flex items-center lg:flex-col gap-20">
-                    <RoundedBanner contents={contents} size="lg" />
+                <div className="container relative z-30">
+                  <div className="xl:flex xl:items-center">
+                    <div className="xl:w-1/2 max-xl:text-center text-white">
+                      <h1 className="text-h3 xl:text-h1 text-primary-light leading-tight" dangerouslySetInnerHTML={{ __html: slide.title }} />
+                      <h6 className="text-md xl:text-h6 mt-2 xl:mt-6">{slide.subtitle}</h6>
+                      <Button variant="outline-light" className="flex items-center mt-8 xl:mt-12 max-xl:mx-auto">
+                        <span>Lets Talk</span>
+                        <Icon src={ArrowRight} size="sm" className="ms-2" />
+                      </Button>
+                    </div>
+                    <div className="xl:w-1/3 max-xl:hidden xl:pe-16">
+                      <div className="flex">
+                        <div className="flex flex-col justify-center flex-1 text-center">
+                          <div className="text-[184px] leading-tight font-semibold text-white">{slide.keyvalue}</div>
+                          <p className="text-h4 text-white">Skilled Professionals</p>
+                        </div>
+                      </div>
+                    </div>
                   </div>
                 </div>
               </div>
-            )}
+            ))}
+          </div>
+        </div>
+
+        {/* Vertical Thumbnails */}
+        <div className="absolute max-xl:bottom-12 max-xl:left-1/2 max-xl:-translate-x-1/2 max-xl:max-w-[calc(100%-40px)] max-md:w-full xl:right-[8%] xl:top-1/2 xl:-translate-y-1/2 z-20">
+          <div className="flex xl:flex-col items-center max-md:justify-between md:gap-14 xxl:gap-20 transition-transform duration-500">
+            {getVisibleThumbs(selectedIndex).map((slide, idx) => {
+              const isActive = slide.offset === 0;
+
+              let sizeClass = "w-[48px] h-[48px] xl:w-[80px] xl:h-[80px]";
+              if (isActive) sizeClass = "w-[96px] h-[96px] xl:w-[128px] xl:h-[128px]";
+              else if (Math.abs(slide.offset) === 1) sizeClass = "w-[48px] h-[48px] xl:w-[80px] xl:h-[80px]";
+              else sizeClass = "w-[24px] h-[24px] xl:w-[32px] xl:h-[32px]";
+
+              const opacityClass = isActive ? "" : Math.abs(slide.offset) > 1 ? "opacity-30" : "opacity-50";
+
+              return (
+                <button
+                  key={`ab_btn-${idx + 1}`}
+                  onClick={() => scrollTo(slide.realIndex)}
+                  className={`rounded-full overflow-hidden transition-all duration-300 shrink-0 ${sizeClass} ${opacityClass}`}
+                >
+                  <Image src={slide.thumb} width={150} height={150} alt="thumbnail" className="w-full" />
+                </button>
+              );
+            })}
           </div>
         </div>
       </div>
