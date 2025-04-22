@@ -17,7 +17,6 @@ import { motion, MotionValue, useTransform } from "framer-motion";
 
 interface RunningTextCanvasProps {
   content: Array<Record<string, any>>;
-  targetRef: React.RefObject<HTMLElement | null>;
   scrollYProgress: MotionValue<number>;
   totalChars: number;
 }
@@ -36,9 +35,10 @@ const RenderText: FC<RenderTextProps> = ({ index, totalChars, scrollYProgress, s
     return { start: globalIndexIn / totalChars, end: (globalIndexIn + 1) / totalChars, globalIndex: globalIndexIn };
   }, [index, startIndex, totalChars]);
 
-  const opacity = useTransform(scrollYProgress, [start, end], [0.2, 1]);
+  const color = useTransform(scrollYProgress, [start, end], ["#000000", "#049E76"]);
+
   return (
-    <motion.span key={globalIndex} style={{ opacity }} className="inline-block">
+    <motion.span key={globalIndex} className="inline-block" style={{ color }}>
       {char === " " ? "\u00A0" : char}
     </motion.span>
   );

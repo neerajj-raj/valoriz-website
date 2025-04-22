@@ -45,7 +45,7 @@ const AboutMissionView: FC<AboutMissionViewProps> = ({ ourMissions }) => {
         <div className="flex-1 flex items-center">
           {/* flex flex-col justify-between h-full */}
           <h3 className="text-h5 lg:text-h3">
-            <RunningTextCanvas content={content} targetRef={sectionRef} scrollYProgress={scrollYProgress} totalChars={totalChars} />
+            <RunningTextCanvas content={content} scrollYProgress={scrollYProgress} totalChars={totalChars} />
           </h3>
         </div>
 

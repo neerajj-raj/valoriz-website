@@ -27,7 +27,7 @@ export default function Home() {
     },
     abouts: {
       title: "We believe in innovation that accelerates the path forward.",
-      media: { key: "1", lg: getAnimationImages(180, "/images/animation/trophy-green/PNG"), sm: "/images/about/video-placeholder.png" },
+      media: { key: "1", lg: getAnimationImages(180, "/images/animation/trophy-green/webp"), sm: "/images/about/video-placeholder.png" },
       features: [
         {
           title: "Ignite Potential",
@@ -243,11 +243,11 @@ export default function Home() {
       email: { title: "Mail Us: info@valoriz.com", mailId: "info@valoriz.com" },
     },
     highlights: {
-      content: [
+      scrollableText: [
         { text: "Turning complexity into simplicity, ", className: "" },
         { isBreak: true },
         { text: "so you can ", className: "" },
-        { text: "focus on success", className: "text-primary" },
+        { text: "focus on success", className: "" },
       ],
     },
   };

@@ -100,7 +100,7 @@ export default function about() {
       title: "Our Mission",
       scrollableText: [
         { text: "Delivering ", className: "" },
-        { text: "high-quality, cutting edge & customer centric", className: "text-primary" },
+        { text: "high-quality, cutting edge & customer centric", className: "" },
         { isBreak: true },
         { text: "solutions to businesses and its customers.​", className: "" },
       ],
@@ -148,6 +148,46 @@ export default function about() {
         { media: "/images/leaderships/leader-ashish.webp", title: "Ashish Thomas", description: "Co-Founder, Director & People Success" },
         { media: "/images/leaderships/leader-madhu.webp", title: "Madhulal", description: "Director - Client Success" },
         { media: "/images/leaderships/leader-riju.webp", title: "Riju Thomas", description: "Technical Architect" },
+      ],
+    },
+    awards: {
+      title: "Awards",
+      contents: [
+        { media: "/images/awards/award-1.webp", title: "Cricket Runner Ups", description: "2023" },
+        { media: "/images/awards/award-2.webp", title: "Valoriz Rebranding", description: "2023" },
+        { media: "/images/awards/award-2.webp", title: "Award Name", description: "2022" },
+      ],
+    },
+    blogs: {
+      title: "Blogs",
+      contents: [
+        {
+          media: "/images/blogs/blog-retail.webp",
+          title: "Revolutionizing Retail: The Impact of Conversational AI on Customer Experience and Sales",
+          points: ["E-Commerce", "Retail", "AI"],
+          description: "In an ever-changing retail world, effective conversational touchpoints are crucial for enhancing customer engagement and satisfaction.",
+        },
+        {
+          media: "/images/blogs/blog-ecommerce.webp",
+          title: "Revolutionizing E-commerce: How AR and 3D Technology Are Transforming Online Shopping",
+          points: ["E-Commerce", "AR", "3D Tech"],
+          description:
+            "The e-commerce landscape is an axis of relentless innovation. Faced with intense competition and continually shifting customer expectations...",
+        },
+        {
+          media: "/images/blogs/blog-next.webp",
+          title: "Next.js Powerup for High-Performance E-Commerce Sites",
+          points: ["E-Commerce", "Performance", "Technology"],
+          description:
+            "Building a high-performance e-commerce storefront is crucial for delivering a seamless user experience and achieving better business outcomes.",
+        },
+        {
+          media: "/images/blogs/check-list.webp",
+          title: "Comprehensive E-commerce Checklist: Plan, Launch, and Grow Your Online Store",
+          points: ["E-Commerce", "Performance", "Technology"],
+          description:
+            "Launching an online store is a multifaceted process that requires meticulous planning and execution. A well-structured checklist can help you navigate the complexities...",
+        },
       ],
     },
   };

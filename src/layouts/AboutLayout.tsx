@@ -20,6 +20,8 @@ import Footer from "@widgets/Footer";
 import OurTeams from "@widgets/OurTeams";
 import LazyWrapper from "@components/LazyWrapper";
 import LeaderShips from "@widgets/LeaderShips";
+import Awards from "@widgets/Awards";
+import Blogs from "@widgets/Blogs";
 
 interface AboutLayoutProps {
   aboutContents: Record<string, any>;
@@ -35,6 +37,8 @@ const AboutLayout: FC<AboutLayoutProps> = ({ aboutContents }) => {
         <AboutHistory contents={aboutContents?.historyInfo} />
         <OurTeams ourTeams={aboutContents?.ourTeams} />
         <LeaderShips leaderShips={aboutContents?.leaderShips} />
+        <Awards awards={aboutContents?.awards} />
+        <Blogs blogs={aboutContents?.blogs} />
         {/* <AboutGoals contents={aboutContents?.goals} /> */}
       </LazyWrapper>
       <Footer />

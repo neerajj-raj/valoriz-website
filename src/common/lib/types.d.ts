@@ -28,5 +28,5 @@ export interface CommonProps {
   title: string;
   description: string;
   scrollableText: Array<Record<string, any>>;
-  contents: Array<{ media: string; title: string; description: string }>;
+  contents: Array<{ media: string; title: string; description: string; points: string[] }>;
 }

@@ -26,7 +26,7 @@ const HighlightsView: FC<HighlightsViewProps> = ({ highlights }) => {
     target: targetRef,
     offset: ["start center", "end center"],
   });
-  const content = useMemo(() => highlights?.content as Array<Record<string, any>>, [highlights?.content]);
+  const content = useMemo(() => highlights?.scrollableText as Array<Record<string, any>>, [highlights?.scrollableText]);
   const totalChars = useMemo(() => getRunningTextCharCount(content), [content]);
 
   return (
@@ -35,7 +35,7 @@ const HighlightsView: FC<HighlightsViewProps> = ({ highlights }) => {
         <div className="container">
           <div className="w-full lg:w-10/12 mx-auto">
             <h2 className="text-h3 lg:text-h2 leading-snug tracking-wide flex flex-wrap">
-              <RunningTextCanvas content={content} targetRef={targetRef} scrollYProgress={scrollYProgress} totalChars={totalChars} />
+              <RunningTextCanvas content={content} scrollYProgress={scrollYProgress} totalChars={totalChars} />
             </h2>
           </div>
         </div>
