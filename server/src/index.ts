@@ -24,8 +24,7 @@ app.post('/email/contact-us', async (req: Request, res: Response) => {
 });
 
 // Start server
-// app.listen(port, () => {
-//   console.log(`Express server running at http://localhost:${port}`);
-// });
-module.exports = app;
+app.listen(port, () => {
+  console.log(`Express server running at http://localhost:${port}`);
+});
 
