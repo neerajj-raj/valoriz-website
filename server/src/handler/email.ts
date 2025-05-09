@@ -23,7 +23,7 @@ const contactToEmail = process.env.CONTACT_TO_EMAIL ?? "";
 
 var transport = nodemailer.createTransport({
     host: "sandbox.smtp.mailtrap.io",
-    port: 2525,
+    port: 587,
     auth: {
       user: "98663c56d9927b",
       pass: "cc014126d7ab5f"
