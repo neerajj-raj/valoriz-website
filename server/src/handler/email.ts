@@ -61,7 +61,7 @@ export const sendJobApplicationEmail = async (body: CareerRequest, resume?: Expr
     from: 'neeraj.sachin2024@gmail.com',
     to: 'neeraj.r@valoriz.com',
     subject: `Valoriz : ${body?.role} - Job Application Received `,
-    html: getCareerTemplate(body, resume),
+    html: getCareerTemplate(body),
         attachments: [
       {
         filename: resume.originalname,

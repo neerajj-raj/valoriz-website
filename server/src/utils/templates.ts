@@ -91,7 +91,7 @@ export const getContactTemplate = (request: ContactsRequest) => {
 };
 
 
-export const getCareerTemplate = (body: CareerRequest, resume?: Express.Multer.File) => {
+export const getCareerTemplate = (body: CareerRequest) => {
     return `<html>
       <head>
         <style>
