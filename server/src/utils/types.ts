@@ -11,20 +11,20 @@
  * @author Neeraj
  */
 export interface ContactsRequest {
-    firstName: string;
-    lastName: string;
-    email: string;
-    dialCode: string;
-    phoneNo: string;
-    projectIdea: string;
-  }
-  
-  export interface CareerRequest {
-    firstName: string;
-    lastName: string;
-    email: string;
-    dialCode: string;
-    phoneNo: string;
-    about: string;
-    resume: File;
-  }
+  firstName: string;
+  lastName: string;
+  email: string;
+  dialCode: string;
+  phoneNo: string;
+  projectIdea: string;
+}
+
+export interface CareerRequest {
+  firstName: string;
+  lastName: string;
+  email: string;
+  dialCode: string;
+  phoneNo: string;
+  about: string;
+  role: string;
+}
